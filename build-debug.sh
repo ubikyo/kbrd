@@ -15,8 +15,12 @@ if [ "${1:-}" = "clean" ]; then
     rm -rf "$OUT"
 fi
 
-# On build kbrd-web
 cd "$WEB"
+
+# On install les modules
+npm install
+
+# On build kbrd-web
 npm run build
 
 # On bumd la version dans le mk
@@ -35,8 +39,6 @@ rm -f "$OUT/images/"*.img || true
 cp $EXT/board/kbrd/cmdline-debug.txt $EXT/board/kbrd/cmdline.txt
 
 make -C "$BR" BR2_EXTERNAL="$EXT" O="$OUT" kbrd_defconfig
-#make -C "$BR" BR2_EXTERNAL="$EXT" O="$OUT" linux-update-defconfig
-#make -C "$BR" BR2_EXTERNAL="$EXT" O="$OUT" busybox-update-config
 
 # Force la reconstruction des packages locaux
 make -C "$BR" BR2_EXTERNAL="$EXT" O="$OUT" kbrd-web-rebuild

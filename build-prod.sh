@@ -13,8 +13,12 @@ DEV="$ROOT/kbrd-dev"
 echo "Suppression complète de $OUT"
 rm -rf "$OUT"
 
-# On build kbrd-web
 cd "$WEB"
+
+# On install les modules
+npm install
+
+# On build kbrd-web
 npm run build
 
 # On bumd la version dans le mk

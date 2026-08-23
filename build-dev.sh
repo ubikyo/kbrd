@@ -15,8 +15,12 @@ if [ "${1:-}" = "clean" ]; then
     rm -rf "$OUT"
 fi
 
-# On build kbrd-web
 cd "$WEB"
+
+# On install les modules
+npm install
+
+# On build kbrd-web
 npm run build
 
 # On bumd la version dans le mk
