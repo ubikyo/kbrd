@@ -1,0 +1,21 @@
+[submodule "kbrd-os"]
+	path = kbrd-os
+	url = git@github.com:ubikyo/kbrd-os.git
+[submodule "kbrd-dev"]
+	path = kbrd-dev
+	url = git@github.com:ubikyo/kbrd-dev.git
+[submodule "kbrd-web"]
+	path = kbrd-web
+	url = git@github.com:ubikyo/kbrd-web.git
+[submodule "kbrd-api"]
+	path = kbrd-api
+	url = git@github.com:ubikyo/kbrd-api.git
+[submodule "buildroot"]
+	path = buildroot
+	url = https://github.com/buildroot/buildroot.git
+[submodule "bootchart"]
+	path = bootchart
+	url = https://github.com/xrmx/bootchart.git
+[submodule "usbboot"]
+	path = usbboot
+	url = https://github.com/raspberrypi/usbboot
