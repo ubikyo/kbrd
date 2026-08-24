@@ -35,18 +35,13 @@ On ajoute la clé privée dans l'agent (à adapter selon le nom de la clé SSH d
 
     ssh-add ~/.ssh/id_ed25519
 
-On clône le dépot :
+On clône le dépot et ses sous-modules :
 
-    git clone git@github.com:ubikyo/kbrd.git
+    git clone --recurse-submodules https://github.com/ubikyo/kbrd.git
 
-On initialise les dépôts :
+## Configuration
 
-    git submodule update --init --recursive
-
-
-## Créer une clé SSH
-
-Utiliser la commande suivante pour générer une clé SSH pour l'utilisateur kbrd :
+Utiliser la commande suivante pour générer une clé SSH pour l'utilisateur kbrd et rattacher les sous-modules à leur branche main :
 
     make configure
 

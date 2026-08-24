@@ -22,6 +22,19 @@ SSH_KEY="$SSH_DIR/kbrd"
 AUTHORIZED_KEYS="$ROOT_DIR/kbrd-os/board/kbrd/rootfs-overlay/home/kbrd/.ssh/authorized_keys"
 
 #
+# Configuration des sous-modules
+#
+
+assert "Configuration des sous-modules"
+
+for module in kbrd-api kbrd-dev kbrd-os kbrd-web; do
+    echo "Configuration de $module..."
+
+    git -C "$ROOT_DIR/$module" fetch origin
+    git -C "$ROOT_DIR/$module" switch main
+done
+
+#
 # Configuration SSH
 #
 
