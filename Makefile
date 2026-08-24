@@ -1,30 +1,64 @@
-.PHONY: all deploy api web dev restart restart-api restart-dev
+.PHONY: all configure deploy restart build flash clean
+
+MODE ?= dev
+PACKAGE ?= all
+CLEAN ?= false
 
 all: deploy
 
-deploy: api web dev
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : déploiement terminé "
+#
+# Configuration
+#
 
-api:
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : API "
-	$(MAKE) -C kbrd-api deploy
+configure:
+	@./scripts/configure.sh
 
-web:
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : WEB "
-	$(MAKE) -C kbrd-web deploy
+#
+# Build
+#
 
-dev:
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : DEV "
-	$(MAKE) -C kbrd-dev deploy
+build:
+ifeq ($(CLEAN),true)
+	@./scripts/build.sh $(MODE) clean
+else
+	@./scripts/build.sh $(MODE)
+endif
 
+#
+# Déploiement
+#
 
-restart: restart-api restart-dev
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : services redémarrés "
+deploy:
+ifeq ($(PACKAGE),all)
+	@$(MAKE) -C kbrd-api deploy
+	@$(MAKE) -C kbrd-web deploy
+	@$(MAKE) -C kbrd-dev deploy
+else
+	@$(MAKE) -C kbrd-$(PACKAGE) deploy
+endif
 
-restart-api:
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : redémarrage API "
-	$(MAKE) -C kbrd-api restart
+#
+# Redémarrage
+#
 
-restart-dev:
-	@printf "\n\033[47;30m %-60s \033[0m\n\n" " KBRD : redémarrage DEV "
-	$(MAKE) -C kbrd-dev restart
+restart:
+ifeq ($(PACKAGE),all)
+	@$(MAKE) -C kbrd-api restart
+	@$(MAKE) -C kbrd-dev restart
+else
+	@$(MAKE) -C kbrd-$(PACKAGE) restart
+endif
+
+#
+# Flash
+#
+
+flash:
+	@./scripts/flash.sh
+
+#
+# Nettoyage
+#
+
+clean:
+	@rm -rf output

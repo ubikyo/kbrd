@@ -1,9 +1,9 @@
-<img src="resources/KBRD.svg" width="300">
+<img src="resources/KBRD.svg" width="400">
 
 
 # Description
 
-KBRD est un POC de fabrication d'un clavier utilisant l'effet Maglev, une carte Raspberry CM4 (ou tout autre raspberry avec stockage eMMC), un écran DSI et une détection des touches par effet Hall. Le projet intègre une interface web pour la configuration du clavier via le réseau Wifi.
+KBRD est un POC de fabrication d'un clavier utilisant l'effet Maglev. Il utilise une carte Raspberry CM4 (ou tout autre raspberry avec stockage eMMC), un écran DSI et une détection des touches par effet Hall. Le projet intègre une interface web pour la configuration du clavier via le réseau Wifi.
 
 # Modules
 
@@ -44,18 +44,71 @@ On initialise les dépôts :
     git submodule update --init --recursive
 
 
+## Créer une clé SSH
+
+Utiliser la commande suivante pour générer une clé SSH pour l'utilisateur kbrd :
+
+    make configure
+
 ## Compilation
 
 Compiler l'ensemble des modules avec l'un des scripts suivants :
 
 |Script|Quiet|Log level|Bootchart|
 |-|-|-|-|
-|build-debug.sh|7|Non|Oui|
-|build-dev.sh|4|Non|Oui|
-|build-prod.sh|3|Oui|Non|
+|make build MODE=debug|7|Non|Oui|
+|make build MODE=dev|4|Non|Oui|
+|make build MODE=prod|3|Oui|Non|
 
 > **NOTE 1 :**  La compilation dure environ 40 minutes à 1h. Elle construit l'image de **KBRD-OS** ainsi que les packages **KBRS-DEV**, **KBRD-API** et **KBRD-WEB**.
 
 > **NOTE 2 :**  Une fois la compilation terminée, l'image pour le raspberry est disponible dans /**output/images/kbrd.img**.
 
-Une fois la compilation terminée, réaliser le [transfert de l'image vers le raspberry](https://github.com/ubikyo/kbrd-os/blob/main/README.md).
+> **NOTE 3 :**  Il est possible d'ajouter **CLEAN=true** pour effacer la compilation précédente.
+
+## Transfert de l'image
+
+Vérifier que l'image est disponible dans le dossier **/output/images/kbrd.img**. Connecter via le port USBC, le raspberry, sur l'ordinateur avec l'interrupteur **BOOT** activé. 
+
+Installer pv :
+
+    sudo apt install pv :
+
+Lancer le transfert :
+
+    make flash
+
+Une fois terminé on désactive le mode **BOOT** boot via l'interrupteur et on redémarre le raspberry.
+
+## Connexion SSH vers le raspberry
+
+Pour actualiser les composants du raspberry, il est nécessaire de définir au préalable une connexion SSH vers l'adresse IP associée au clavier. 
+
+Modifier le fichier de configuration :
+
+    sudo nano .ssh/config
+
+Ajouter la configuration suivante :
+
+    Host kbrd
+        HostName {ip_ou_fqdn_du_raspberry}
+        User kbrd
+        StrictHostKeyChecking no
+        IdentityFile ~/.ssh/kbrd
+        IdentitiesOnly yes
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null
+
+## Actualisation des composants
+
+KBRD-DEV, KBRD-API et KBRD-WEB doivent être redéployés sur le périphérique après toute mise à jour. Pour éviter de refaire systématiquement l'image et de transférer celle-ci sur le raspberry, il est possible d'utiliser l'une des commandes suivantes :
+
+|Commande|Description|
+|-|-|
+|make deploy|Déploie l'ensemble des composant|
+|make deploy PACKAGE=dev|Déploie KBRD-DEV|
+|make deploy PACKAGE=api|Déploie KBRD-API|
+|make deploy PACKAGE=web|Déploie KBRD-WEB|
+
+> **NOTE :**  Le déploiement redémarre les services associés à KBRD-DEV et KBRD-API.
+
