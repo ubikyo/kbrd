@@ -1,4 +1,4 @@
-.PHONY: all configure deploy restart build flash clean
+.PHONY: all configure deploy restart build flash flash-full clean
 
 MODE ?= dev
 PACKAGE ?= all
@@ -54,7 +54,10 @@ endif
 #
 
 flash:
-	@./scripts/flash.sh
+	@./scripts/flash.sh update
+
+flash-full:
+	@./scripts/flash.sh full
 
 #
 # Nettoyage

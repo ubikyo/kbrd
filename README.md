@@ -23,17 +23,9 @@ Le développement est associé aux éléments suivants :
 |[Raspberry Compute Model 4](https://www.raspberrypi.com/products/compute-module-4/)|Raspberry au format compact|
 |[Waveshare CM4-IO-BASE-A](https://www.waveshare.com/wiki/CM4-IO-BASE-A)|Carte de développement Waveshare pour Raspberry CM4|
 |[Waveshare 10.1-DSI-TOUCH-A](https://www.waveshare.com/wiki/10.1-DSI-TOUCH-A)|Ecran au format DSI|
-|[SH-U07A](https://www.deshide.com/product-details_SH-U07A.html)|Un adaptateur USB to TTL connecté entre les ports GND/RX/TX de l'adaptateur et du CM4-IO-BASE-A pour obtenir la console **ttyAMA0**.|
+|[SH-U07A](https://www.deshide.com/product-details_SH-U07A.html)|Optionnel, un adaptateur USB to TTL connecté entre les ports GND/RX/TX de l'adaptateur et du CM4-IO-BASE-A pour obtenir la console **ttyAMA0**.|
 
 ## Déploiement des dépôts
-
-Sur une VM ou localment, on stocke les clés SSH en mémoire dans le shell actuel :
-
-    eval "$(ssh-agent -s)"
-
-On ajoute la clé privée dans l'agent (à adapter selon le nom de la clé SSH de l'utilisateur) :
-
-    ssh-add ~/.ssh/id_ed25519
 
 On clône le dépot et ses sous-modules :
 
@@ -43,6 +35,7 @@ On clône le dépot et ses sous-modules :
 
 Utiliser la commande suivante pour générer une clé SSH pour l'utilisateur kbrd et rattacher les sous-modules à leur branche main :
 
+    cd kbrd
     make configure
 
 ## Compilation
@@ -67,11 +60,21 @@ Vérifier que l'image est disponible dans le dossier **/output/images/kbrd.img**
 
 Installer pv :
 
-    sudo apt install pv :
+    sudo apt install pv
 
-Lancer le transfert :
+Comiler usbboot
+
+    make -C usbboot
+
+Pour mettre à jour les partitions boot et rootfs sans effacer la base de données
+stockée dans la partition `/data` :
 
     make flash
+
+Pour une première installation, ou pour réécrire entièrement le stockage eMMC
+(la partition `/data` et sa base de données seront effacées) :
+
+    make flash-full
 
 Une fois terminé on désactive le mode **BOOT** boot via l'interrupteur et on redémarre le raspberry.
 
@@ -106,4 +109,3 @@ KBRD-DEV, KBRD-API et KBRD-WEB doivent être redéployés sur le périphérique 
 |make deploy PACKAGE=web|Déploie KBRD-WEB|
 
 > **NOTE :**  Le déploiement redémarre les services associés à KBRD-DEV et KBRD-API.
-

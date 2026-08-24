@@ -59,19 +59,6 @@ assert "KBRD-WEB : compilation"
 npm run build
 
 #
-# Version KBRD-WEB
-#
-
-WEB_VER=$(git rev-parse --short=12 HEAD)
-MK="$EXT/package/kbrd-web/kbrd-web.mk"
-
-sed -i \
-    "s/^KBRD_WEB_VERSION = .*/KBRD_WEB_VERSION = ${WEB_VER}/" \
-    "$MK"
-
-printf "Version : %s\n" "$WEB_VER"
-
-#
 # Configuration Buildroot
 #
 
