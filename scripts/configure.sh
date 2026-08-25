@@ -27,7 +27,7 @@ AUTHORIZED_KEYS="$ROOT_DIR/kbrd-os/board/kbrd/rootfs-overlay/home/kbrd/.ssh/auth
 
 assert "Configuration des sous-modules"
 
-for module in kbrd-api kbrd-dev kbrd-os kbrd-web; do
+for module in kbrd-api kbrd-dev kbrd-os kbrd-plugins kbrd-web; do
     echo "Configuration de $module..."
 
     git -C "$ROOT_DIR/$module" fetch origin

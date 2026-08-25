@@ -32,6 +32,7 @@ deploy:
 ifeq ($(PACKAGE),all)
 	@$(MAKE) -C kbrd-api deploy
 	@$(MAKE) -C kbrd-web deploy
+	@$(MAKE) -C kbrd-plugins deploy
 	@$(MAKE) -C kbrd-dev deploy
 else
 	@$(MAKE) -C kbrd-$(PACKAGE) deploy

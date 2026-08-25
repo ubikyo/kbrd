@@ -13,6 +13,7 @@ KBRD est un POC de fabrication d'un clavier utilisant l'effet Maglev. Il utilise
 |[KBRD-DEV](https://github.com/ubikyo/kbrd-dev)|Logiciel embarqué par le PI pour afficher le clavier|
 |[KBRD-API](https://github.com/ubikyo/kbrd-api)|API REST pour échange entre les modules|
 |[KBRD-WEB](https://github.com/ubikyo/kbrd-web)|Interface web pour la configuration du clavier|
+|[KBRD-PLUGINS](https://github.com/ubikyo/kbrd-plugins)|Plugins partagés entre l'interface web et le clavier|
 
 
 # Développement
@@ -107,5 +108,6 @@ KBRD-DEV, KBRD-API et KBRD-WEB doivent être redéployés sur le périphérique 
 |make deploy PACKAGE=dev|Déploie KBRD-DEV|
 |make deploy PACKAGE=api|Déploie KBRD-API|
 |make deploy PACKAGE=web|Déploie KBRD-WEB|
+|make deploy PACKAGE=plugins|Déploie KBRD-PLUGINS|
 
 > **NOTE :**  Le déploiement redémarre les services associés à KBRD-DEV et KBRD-API.
