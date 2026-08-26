@@ -40,7 +40,7 @@ WEB="$ROOT/kbrd-web"
 # Nettoyage
 #
 
-if [ "$MODE" = "prod" ] || [ "$CLEAN" = "clean" ]; then
+if [ "$CLEAN" = "clean" ]; then
     assert "Suppression complète de $OUT"
     rm -rf "$OUT"
 fi
@@ -108,7 +108,8 @@ assert "KBRD-OS : génération de l'image"
 
 make -C "$BR" \
     BR2_EXTERNAL="$EXT" \
-    O="$OUT"
+    O="$OUT" \
+    -j"$(nproc)"
 
 #
 # Terminé
