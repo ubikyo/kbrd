@@ -1,113 +1,135 @@
 <img src="resources/KBRD.svg" width="400">
 
-
 # Description
 
-KBRD est un POC de fabrication d'un clavier utilisant l'effet Maglev. Il utilise une carte Raspberry CM4 (ou tout autre raspberry avec stockage eMMC), un écran DSI et une détection des touches par effet Hall. Le projet intègre une interface web pour la configuration du clavier via le réseau Wifi.
+KBRD is a POC for building a keyboard using the Maglev effect. It uses a Raspberry CM4 board (or any other Raspberry with eMMC storage), a DSI display, and key position detection using Hall effect sensors. The project includes a web interface for configuring the keyboard via the Wi-Fi network.
 
 # Modules
 
 |Module|Description|
 |-|-|
-|[KBRD-OS](https://github.com/ubikyo/kbrd-os)|Système d'exploitation pour le clavier|
-|[KBRD-DEV](https://github.com/ubikyo/kbrd-dev)|Logiciel embarqué par le PI pour afficher le clavier|
-|[KBRD-API](https://github.com/ubikyo/kbrd-api)|API REST pour échange entre les modules|
-|[KBRD-WEB](https://github.com/ubikyo/kbrd-web)|Interface web pour la configuration du clavier|
-|[KBRD-PLUGINS](https://github.com/ubikyo/kbrd-plugins)|Plugins partagés entre l'interface web et le clavier|
+|[KBRD-OS](https://github.com/ubikyo/kbrd-os)|Operating system for the keyboard|
+|[KBRD-DEV](https://github.com/ubikyo/kbrd-dev)|Software embedded on the Raspberry to display the keyboard|
+|[KBRD-API](https://github.com/ubikyo/kbrd-api)|REST API for communication between modules|
+|[KBRD-WEB](https://github.com/ubikyo/kbrd-web)|Web interface for keyboard configuration|
+|[KBRD-PLUGINS](https://github.com/ubikyo/kbrd-plugins)|Plugins shared between the web interface and the keyboard|
 
+# Development
 
-# Développement
-Le développement est associé aux éléments suivants :
+Development is associated with the following components:
 
-|Element|Description|
+|Component|Description|
 |-|-|
-|[Raspberry Compute Model 4](https://www.raspberrypi.com/products/compute-module-4/)|Raspberry au format compact|
-|[Waveshare CM4-IO-BASE-A](https://www.waveshare.com/wiki/CM4-IO-BASE-A)|Carte de développement Waveshare pour Raspberry CM4|
-|[Waveshare 10.1-DSI-TOUCH-A](https://www.waveshare.com/wiki/10.1-DSI-TOUCH-A)|Ecran au format DSI|
-|[SH-U07A](https://www.deshide.com/product-details_SH-U07A.html)|Optionnel, un adaptateur USB to TTL connecté entre les ports GND/RX/TX de l'adaptateur et du CM4-IO-BASE-A pour obtenir la console **ttyAMA0**.|
+|[Raspberry Compute Module 4](https://www.raspberrypi.com/products/compute-module-4/)|Raspberry in a compact form factor|
+|[Waveshare CM4-IO-BASE-A](https://www.waveshare.com/wiki/CM4-IO-BASE-A)|Waveshare development board for Raspberry CM4|
+|[Waveshare 10.1-DSI-TOUCH-A](https://www.waveshare.com/wiki/10.1-DSI-TOUCH-A)|DSI display|
+|[SH-U07A](https://www.deshide.com/product-details_SH-U07A.html)|Optional, a USB-to-TTL adapter connected between the GND/RX/TX ports of the adapter and the CM4-IO-BASE-A to access the **ttyAMA0** console.|
 
-## Déploiement des dépôts
+## Repository deployment
 
-On clône le dépot et ses sous-modules :
+Clone the repository and its submodules:
 
-    git clone --recurse-submodules https://github.com/ubikyo/kbrd.git
+```
+git clone --recurse-submodules https://github.com/ubikyo/kbrd.git
+```
 
 ## Configuration
 
-Utiliser la commande suivante pour générer une clé SSH pour l'utilisateur kbrd et rattacher les sous-modules à leur branche main :
+Use the following command to generate an SSH key for the kbrd user and attach the submodules to their main branch:
 
-    cd kbrd
-    make configure
+```
+cd kbrd
+
+make configure
+```
 
 ## Compilation
 
-Compiler l'ensemble des modules avec l'un des scripts suivants :
+Compile all modules using one of the following commands:
 
 |Script|Quiet|Log level|Bootchart|
 |-|-|-|-|
-|make build MODE=debug|7|Non|Oui|
-|make build MODE=dev|4|Non|Oui|
-|make build MODE=prod|3|Oui|Non|
+|make build MODE=debug|7|No|Yes|
+|make build MODE=dev|4|No|Yes|
+|make build MODE=prod|3|Yes|No|
 
-> **NOTE 1 :**  La compilation dure environ 40 minutes à 1h. Elle construit l'image de **KBRD-OS** ainsi que les packages **KBRS-DEV**, **KBRD-API** et **KBRD-WEB**.
+> [!IMPORTANT]
+> Compilation takes approximately 40 minutes to 1 hour. It builds the **KBRD-OS** image as well as the **KBRD-DEV**, **KBRD-API**, and **KBRD-WEB** packages.
 
-> **NOTE 2 :**  Une fois la compilation terminée, l'image pour le raspberry est disponible dans /**output/images/kbrd.img**.
+> [!NOTE]
+> Once compilation is complete, the Raspberry image is available in **/output/images/kbrd.img**.
 
-> **NOTE 3 :**  Il est possible d'ajouter **CLEAN=true** pour effacer la compilation précédente.
+> [!TIP]
+> It is possible to add **CLEAN=true** to delete the previous build.
 
-## Transfert de l'image
+## Image transfer
 
-Vérifier que l'image est disponible dans le dossier **/output/images/kbrd.img**. Connecter via le port USBC, le raspberry, sur l'ordinateur avec l'interrupteur **BOOT** activé. 
+Check that the image is available in **/output/images/kbrd.img**. Connect the Raspberry to the computer via the USB-C port with the **BOOT** switch enabled.
 
-Installer pv :
+Install pv:
 
-    sudo apt install pv
+```
+sudo apt install pv
+```
 
-Comiler usbboot
+Compile usbboot:
 
-    make -C usbboot
+```
+make -C usbboot
+```
 
-Pour mettre à jour les partitions boot et rootfs sans effacer la base de données
-stockée dans la partition `/data` :
+For a first installation, or to completely rewrite the eMMC storage
+(the `/data` partition and its database will be erased):
 
-    make flash
+```
+make flash-full
+```
 
-Pour une première installation, ou pour réécrire entièrement le stockage eMMC
-(la partition `/data` et sa base de données seront effacées) :
+> [!NOTE]
+> Once the image is installed, use `make flash` to update the boot and rootfs partitions without erasing the data stored in the `/data` partition.
 
-    make flash-full
+> [!IMPORTANT]
+> Once complete, disable **BOOT** mode using the switch and restart the Raspberry.
 
-Une fois terminé on désactive le mode **BOOT** boot via l'interrupteur et on redémarre le raspberry.
+## SSH connection to the Raspberry
 
-## Connexion SSH vers le raspberry
+To update the Raspberry components, it is necessary to first define an SSH connection to the IP address associated with the keyboard.
 
-Pour actualiser les composants du raspberry, il est nécessaire de définir au préalable une connexion SSH vers l'adresse IP associée au clavier. 
+Edit the configuration file:
 
-Modifier le fichier de configuration :
+```
+sudo nano .ssh/config
+```
 
-    sudo nano .ssh/config
+Add the following configuration:
 
-Ajouter la configuration suivante :
+```
+Host kbrd
 
-    Host kbrd
-        HostName {ip_ou_fqdn_du_raspberry}
-        User kbrd
-        StrictHostKeyChecking no
-        IdentityFile ~/.ssh/kbrd
-        IdentitiesOnly yes
-        StrictHostKeyChecking no
-        UserKnownHostsFile /dev/null
+    HostName {raspberry_ip_or_fqdn}
 
-## Actualisation des composants
+    User kbrd
 
-KBRD-DEV, KBRD-API et KBRD-WEB doivent être redéployés sur le périphérique après toute mise à jour. Pour éviter de refaire systématiquement l'image et de transférer celle-ci sur le raspberry, il est possible d'utiliser l'une des commandes suivantes :
+    IdentityFile ~/.ssh/kbrd
 
-|Commande|Description|
+    IdentitiesOnly yes
+
+    StrictHostKeyChecking no
+
+    UserKnownHostsFile /dev/null
+```
+
+## Component updates
+
+KBRD-DEV, KBRD-API, and KBRD-WEB must be redeployed to the device after any update. To avoid systematically rebuilding the image and transferring it to the Raspberry, one of the following commands can be used:
+
+|Command|Description|
 |-|-|
-|make deploy|Déploie l'ensemble des composant|
-|make deploy PACKAGE=dev|Déploie KBRD-DEV|
-|make deploy PACKAGE=api|Déploie KBRD-API|
-|make deploy PACKAGE=web|Déploie KBRD-WEB|
-|make deploy PACKAGE=plugins|Déploie KBRD-PLUGINS|
+|`make deploy`|Deploys all components|
+|`make deploy PACKAGE=dev`|Deploys KBRD-DEV|
+|`make deploy PACKAGE=api`|Deploys KBRD-API|
+|`make deploy PACKAGE=web`|Deploys KBRD-WEB|
+|`make deploy PACKAGE=plugins`|Deploys KBRD-PLUGINS|
 
-> **NOTE :**  Le déploiement redémarre les services associés à KBRD-DEV et KBRD-API.
+> [!IMPORTANT]
+> Deployment restarts the services associated with KBRD-DEV and KBRD-API.
