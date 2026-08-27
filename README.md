@@ -13,6 +13,7 @@
 |[KBRD-API](https://github.com/ubikyo/kbrd-api)|REST API for communication between modules|
 |[KBRD-WEB](https://github.com/ubikyo/kbrd-web)|Web interface for keyboard configuration|
 |[KBRD-PLUGINS](https://github.com/ubikyo/kbrd-plugins)|Plugins shared between the web interface and the keyboard|
+|[KBRD-AGENT](https://github.com/ubikyo/kbrd-agent)|Desktop agent used to invoke applications through KBRD-API|
 
 # Development
 
@@ -123,6 +124,7 @@ Host kbrd
 |`make deploy PACKAGE=api`|Deploys `KBRD-API`|
 |`make deploy PACKAGE=web`|Deploys `KBRD-WEB`|
 |`make deploy PACKAGE=plugins`|Deploys `KBRD-PLUGINS`|
+|`make deploy PACKAGE=agent MACOS_HOST=mac MACOS_ARCH=arm64 KBRD_API_URL=http://kbrd.local:8081`|Builds and deploys `KBRD-AGENT` to the Mac over SSH|
 
 > [!IMPORTANT]
 > Deployment restarts the services associated with `KBRD-DEV` and `KBRD-API`.

@@ -13,6 +13,9 @@
 [submodule "kbrd-plugins"]
 	path = kbrd-plugins
 	url = https://github.com/ubikyo/kbrd-plugins.git
+[submodule "kbrd-agent"]
+	path = kbrd-agent
+	url = https://github.com/ubikyo/kbrd-agent.git
 [submodule "buildroot"]
 	path = buildroot
 	url = https://github.com/buildroot/buildroot.git
