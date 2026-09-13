@@ -91,6 +91,31 @@ make flash-full
 > [!IMPORTANT]
 > Once complete, disable `BOOT` mode using the switch and restart the Raspberry.
 
+## First boot
+
+A keyboard that has never been told which Wi-Fi to join brings up one of
+its own instead, and serves DHCP on it, so the web interface can be
+reached to be told where to go next:
+
+|Setting|Value|
+|-|-|
+|SSID|`KBRD-<last 4 characters of the CM4 serial>`|
+|WPA2 key|`kbrd-setup`|
+|Interface|http://192.168.100.1|
+
+Join that network, open the address above, and fill in *Settings →
+Network*: the SSID to join (scanned or typed), its key, and either DHCP or
+a static address with its netmask, gateway and two DNS servers. Saving
+applies a second later — the keyboard leaves the hotspot as it does, so
+expect the page to stop answering and to find the device on its new
+address.
+
+> [!NOTE]
+> The hotspot comes back whenever a saved network can't be joined within
+> 30 seconds, which is what makes a keyboard recoverable after a router
+> changes or a key is mistyped. See [KBRD-OS's own
+> README](kbrd-os/README.md) for the settings behind it.
+
 ## SSH connection to the Raspberry
 
 To update the Raspberry components, it is necessary to first define an SSH connection to the IP address associated with the keyboard.
