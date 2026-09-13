@@ -103,12 +103,25 @@ reached to be told where to go next:
 |WPA2 key|`kbrd-setup`|
 |Interface|http://192.168.100.1|
 
-Join that network, open the address above, and fill in *Settings →
-Network*: the SSID to join (scanned or typed), its key, and either DHCP or
-a static address with its netmask, gateway and two DNS servers. Saving
-applies a second later — the keyboard leaves the hotspot as it does, so
-expect the page to stop answering and to find the device on its new
-address.
+Join that network and open the address above: a keyboard that has never
+been set up opens a wizard rather than the app.
+
+|Step|What it asks|
+|-|-|
+|Wi-Fi|Which network to join, picked from the ones in range — or typed, for a hidden one — and its key.|
+|Network|How the keyboard addresses itself on it: DHCP, or a static address with its netmask, gateway and two DNS servers.|
+|Screen|Which display this is: a panel picked by brand and model, or a name and an active area in millimetres. Every layout is drawn against that size.|
+|Confirm|What the three above add up to, and the one place any of it is written.|
+
+Nothing is written until that last step is confirmed — a wizard closed or
+reloaded half-way leaves the device exactly as it was and starts again
+from the top, rather than handing over a keyboard that is part set up.
+
+Confirming saves everything, then joins the network. The keyboard leaves
+the hotspot as it does, so expect the page to stop answering and to open
+it again on the device's new address. The setup itself is kept either way
+and is never asked for again — the same settings are in *Settings →
+Network* and *Settings → Display* afterwards.
 
 > [!NOTE]
 > The hotspot comes back whenever a saved network can't be joined within
